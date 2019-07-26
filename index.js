@@ -36,7 +36,7 @@ app.post('/webhook/', function(req, res) {
 	let flag = false;
 	let messaging_events = req.body.entry[0].messaging;
 	let zip_code = 0;
-	const event = messaging_events[i];
+	const event = messaging_events[0];
 	const sender = event.sender.id;
 	for(let i = 0; i < messaging_events.length; i++) {
 		if(event.message && event.message.text) {
