@@ -33,22 +33,15 @@ app.get('/webhook/', function(req, res) {
 
 app.post('/webhook/', function(req, res) {
 	let messaging_events = req.body.entry[0].messaging;
-	let zip_code = 0;
 	const event = messaging_events[0];
 	const sender = event.sender.id;
-	console.log('BEFORE FOR')
 	for(let i = 0; i < messaging_events.length; i++) {
-		console.log('-------------- LENGTH', messaging_events.length);
 		if(event.message && event.message.text) {
-			console.log('event.message: ', event.message);
             let text = event.message.text;
             if(text === 'Empezar') {
-				console.log('-------Empezar', i);
-				flag = true
 				sendText(sender, msgWelcome);
 				break;
             } else if(validatePostalCode(text)) {
-				flag = true;
 				let options = {
 					uri: `http://api.openweathermap.org/data/2.5/weather?zip=${ text },mx&APPID=fb3c355effc42120a6334c03cb8291ba`,
 					json: true
