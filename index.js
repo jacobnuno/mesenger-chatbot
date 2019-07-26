@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express');;
 const bodyParser = require('body-parser');
 const rp = require('request-promise');
@@ -12,7 +13,7 @@ app.get('/', (req, res) => {
 });
 
 // Facebook
-const token = 'EAAE3lPwLjZBIBAOxVbWsfDCwSc9xZCyaNJfQqvXmhcWDWEL2lVZBnyZC21MKAOwJ2ZAZAol9YwbEZB9YlI6dOlZBf2FzWw8kEd1LrP0Crwf8JNOfDpZARuMhdBat5YAc7XL8IoGohfXnR31is7R3WYGNm6ASocYGctsy0j1ifMxLdOstSDPgzZARzH';
+const token = process.env.FACEBOOK_TOKEN;
 const msgWelcome = 'Bienvenido a Jacob Chatbot \nIngresa tu código postal para informarte sobre el clima en tu zona';
 const msgError = '¡Ups! Parece que no enviaste un código postal';
 
@@ -43,7 +44,7 @@ app.post('/webhook/', function(req, res) {
 				break;
             } else if(validatePostalCode(text)) {
 				let options = {
-					uri: `http://api.openweathermap.org/data/2.5/weather?zip=${ text },mx&APPID=fb3c355effc42120a6334c03cb8291ba`,
+					uri: `http://api.openweathermap.org/data/2.5/weather?zip=${ text },mx&APPID=${ process.env.OPENWEATHER_TOKEN }`,
 					json: true
 				};
 				rp(options)
