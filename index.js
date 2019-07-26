@@ -33,7 +33,7 @@ app.get('/webhook/', function(req, res) {
 });
 
 app.post('/webhook/', function(req, res) {
-	let flag = false;
+	//let flag = false;
 	let messaging_events = req.body.entry[0].messaging;
 	let zip_code = 0;
 	const event = messaging_events[0];
