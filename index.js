@@ -13,8 +13,7 @@ app.get('/', (req, res) => {
 
 // Facebook
 const token = 'EAAE3lPwLjZBIBAOxVbWsfDCwSc9xZCyaNJfQqvXmhcWDWEL2lVZBnyZC21MKAOwJ2ZAZAol9YwbEZB9YlI6dOlZBf2FzWw8kEd1LrP0Crwf8JNOfDpZARuMhdBat5YAc7XL8IoGohfXnR31is7R3WYGNm6ASocYGctsy0j1ifMxLdOstSDPgzZARzH';
-const msgWelcome = 'Bienvenido a Jacob Chatbot \n Ingresa tu código postal para informarte sobre el clima en tu zona';
-const msgWelcome2 = 'Ingresa tu código postal para informarte sobre el clima en tu zona';
+const msgWelcome = 'Bienvenido a Jacob Chatbot \nIngresa tu código postal para informarte sobre el clima en tu zona';
 const msgError = '¡Ups! Parece que no enviaste un código postal';
 
 function validatePostalCode(value) {
@@ -38,16 +37,18 @@ app.post('/webhook/', function(req, res) {
 	let zip_code = 0;
 	const event = messaging_events[0];
 	const sender = event.sender.id;
+	console.log('BEFORE FOR')
 	for(let i = 0; i < messaging_events.length; i++) {
-		console.log('-------------- ', messaging_events.length);
+		console.log('-------------- LENGTH', messaging_events.length);
 		if(event.message && event.message.text) {
 			console.log('event.message: ', event.message);
             let text = event.message.text;
             if(text === 'Empezar') {
-				console.log('-------i', i);
-                sendText(sender, msgWelcome);
-                //sendText(sender, msgWelcome2);
+				console.log('-------Empezar', i);
+				sendText(sender, msgWelcome);
+				break;
             } else {
+				console.log('elseeeeeeeee: ', event.message.text);
                 if(validatePostalCode(text)) {
 					flag = true;
 					zip_code = text;
@@ -55,7 +56,7 @@ app.post('/webhook/', function(req, res) {
                 }
             }
 		}
-	}
+	} /*
 	if(flag) {
 		let options = {
 			uri: `http://api.openweathermap.org/data/2.5/weather?zip=${ zip_code },mx&APPID=fb3c355effc42120a6334c03cb8291ba`,
@@ -72,7 +73,7 @@ app.post('/webhook/', function(req, res) {
 			});
 	} else {
 		sendText(sender, msgError);
-	}
+	} */
 	
 	res.sendStatus(200);
 });
