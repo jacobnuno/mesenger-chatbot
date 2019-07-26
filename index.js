@@ -32,7 +32,6 @@ app.get('/webhook/', function(req, res) {
 });
 
 app.post('/webhook/', function(req, res) {
-	//let flag = false;
 	let messaging_events = req.body.entry[0].messaging;
 	let zip_code = 0;
 	const event = messaging_events[0];
@@ -45,35 +44,30 @@ app.post('/webhook/', function(req, res) {
             let text = event.message.text;
             if(text === 'Empezar') {
 				console.log('-------Empezar', i);
+				flag = true
 				sendText(sender, msgWelcome);
 				break;
-            } else {
-				console.log('elseeeeeeeee: ', event.message.text);
-                if(validatePostalCode(text)) {
-					flag = true;
-					zip_code = text;
-					break;
-                }
-            }
+            } else if(validatePostalCode(text)) {
+				flag = true;
+				let options = {
+					uri: `http://api.openweathermap.org/data/2.5/weather?zip=${ text },mx&APPID=fb3c355effc42120a6334c03cb8291ba`,
+					json: true
+				};
+				rp(options)
+					.then(function (apiResponse) {
+						let temp = kelvinToCelsius(apiResponse.main['temp']);
+						let place = apiResponse.name;
+						sendText(sender, `La temperatura de ${place} es: ${temp} grados`);
+					})
+					.catch(function (err) {
+						console.log('error', err);
+					});
+				break;
+			} else {
+				sendText(sender, msgError);
+			}
 		}
-	} /*
-	if(flag) {
-		let options = {
-			uri: `http://api.openweathermap.org/data/2.5/weather?zip=${ zip_code },mx&APPID=fb3c355effc42120a6334c03cb8291ba`,
-			json: true
-		};
-		rp(options)
-			.then(function (apiResponse) {
-				let temp = kelvinToCelsius(apiResponse.main['temp']);
-				let place = apiResponse.name;
-				sendText(sender, `La temperatura de ${place} es: ${temp} grados`);
-			})
-			.catch(function (err) {
-				console.log('error', err);
-			});
-	} else {
-		sendText(sender, msgError);
-	} */
+	}
 	
 	res.sendStatus(200);
 });
