@@ -12,7 +12,7 @@ app.get('/', (req, res) => {
 });
 
 // Facebook
-const token = 'EAAE3lPwLjZBIBALuH9ZC2jzoaDJ6L18UrUtB4b5wnbSeGn8CxC8x9P5NfyrJrxvNhcbsqsAdGfepUrtaNlMcOvZB4MtUIrL1lY0XVZBwDiAaF2apgkTpVKzorqfY7hKzb5Qh9VH0Cdpgp3jWMtT5zfQpfmRpIGHJTfwirZCSmcmBjNQ2prIUe';
+const token = 'EAAE3lPwLjZBIBAOxVbWsfDCwSc9xZCyaNJfQqvXmhcWDWEL2lVZBnyZC21MKAOwJ2ZAZAol9YwbEZB9YlI6dOlZBf2FzWw8kEd1LrP0Crwf8JNOfDpZARuMhdBat5YAc7XL8IoGohfXnR31is7R3WYGNm6ASocYGctsy0j1ifMxLdOstSDPgzZARzH';
 const msgWelcome = 'Bienvenido a Jacob Chatbot';
 const msgWelcome2 = 'Ingresa tu código postal para informarte sobre el clima en tu zona';
 const msgError = '¡Ups! Parece que no enviaste un código postal';
@@ -25,11 +25,11 @@ function kelvinToCelsius(kelvin) {
 	return (parseFloat(kelvin) - 273.15);
 }
 
-app.get('webhook', (req, res) => {
-    if(req.query['hub.verify_token'] === 'jacob_secret_token') { 
-        res.send(req.query['hub.challengue']);
-    }
-    res.send('Token invalido');
+app.get('/webhook/', function(req, res) {
+	if (req.query['hub.verify_token'] === "jacob_secret_token") {
+		res.send(req.query['hub.challenge'])
+	}
+	res.send("Wrong token")
 });
 
 app.post('/webhook/', function(req, res) {
