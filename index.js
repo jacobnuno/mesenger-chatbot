@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
 
 // Facebook
 const token = 'EAAE3lPwLjZBIBAOxVbWsfDCwSc9xZCyaNJfQqvXmhcWDWEL2lVZBnyZC21MKAOwJ2ZAZAol9YwbEZB9YlI6dOlZBf2FzWw8kEd1LrP0Crwf8JNOfDpZARuMhdBat5YAc7XL8IoGohfXnR31is7R3WYGNm6ASocYGctsy0j1ifMxLdOstSDPgzZARzH';
-const msgWelcome = 'Bienvenido a Jacob Chatbot';
+const msgWelcome = 'Bienvenido a Jacob Chatbot \n Ingresa tu código postal para informarte sobre el clima en tu zona';
 const msgWelcome2 = 'Ingresa tu código postal para informarte sobre el clima en tu zona';
 const msgError = '¡Ups! Parece que no enviaste un código postal';
 
@@ -41,11 +41,12 @@ app.post('/webhook/', function(req, res) {
 	for(let i = 0; i < messaging_events.length; i++) {
 		console.log('-------------- ', messaging_events.length);
 		if(event.message && event.message.text) {
-			console.log('event.message: ', event.message, ' --- event.message.text: ', event.message);
+			console.log('event.message: ', event.message);
             let text = event.message.text;
             if(text === 'Empezar') {
+				console.log('-------i', i);
                 sendText(sender, msgWelcome);
-                sendText(sender, msgWelcome2);
+                //sendText(sender, msgWelcome2);
             } else {
                 if(validatePostalCode(text)) {
 					flag = true;
