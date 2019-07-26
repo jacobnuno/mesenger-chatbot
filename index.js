@@ -39,7 +39,9 @@ app.post('/webhook/', function(req, res) {
 	const event = messaging_events[0];
 	const sender = event.sender.id;
 	for(let i = 0; i < messaging_events.length; i++) {
+		console.log('-------------- ', messaging_events.length);
 		if(event.message && event.message.text) {
+			console.log('event.message: ', event.message, ' --- event.message.text: ', event.message);
             let text = event.message.text;
             if(text === 'Empezar') {
                 sendText(sender, msgWelcome);
@@ -62,7 +64,7 @@ app.post('/webhook/', function(req, res) {
 			.then(function (apiResponse) {
 				let temp = kelvinToCelsius(apiResponse.main['temp']);
 				let place = apiResponse.name;
-				sendText(sender, `La temperatura de ${place} es: ${temp}`);
+				sendText(sender, `La temperatura de ${place} es: ${temp} grados`);
 			})
 			.catch(function (err) {
 				console.log('error', err);
