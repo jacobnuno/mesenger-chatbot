@@ -77,6 +77,7 @@ function sendText(sender, textToSend) {
 	let options = {
 		method: 'POST',
 		uri: 'https://graph.facebook.com/v2.6/me/messages',
+		qs : {access_token: token},
 		body: {
 			recipient: { id: sender },
 			message: { text: textToSend},
